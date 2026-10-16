@@ -12,8 +12,8 @@ services:
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
 
-    # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
-    network_mode: service:db
+    networks:
+      - document-search
     depends_on:
       ollama-init:
         condition: service_completed_successfully
@@ -33,6 +33,8 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
+    networks:
+      - document-search
 
     # Add "forwardPorts": ["5432"] to **devcontainer.json** to forward PostgreSQL locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)
@@ -42,6 +44,8 @@ services:
     restart: unless-stopped
     volumes:
       - ollama-data:/root/.ollama
+    networks:
+      - document-search
     healthcheck:
       test: ["CMD", "ollama", "list"]
       interval: 5s
@@ -55,6 +59,8 @@ services:
     environment:
       OLLAMA_HOST: http://ollama:11434
     command: ["pull", "embeddinggemma"]
+    networks:
+      - document-search
     depends_on:
       ollama:
         condition: service_healthy
@@ -62,3 +68,7 @@ services:
 volumes:
   postgres-data:
   ollama-data:
+
+networks:
+  document-search:
+    driver: bridge
