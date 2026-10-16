@@ -5,7 +5,7 @@ Trust this guide for routine work and search only when it is incomplete or contr
 ## Toolchain and workflow
 
 - Work from the repository root. All projects target `net10.0`; use a .NET 10 SDK. `global.json` selects the `Microsoft.Testing.Platform` test runner but does **not** pin an SDK version.
-- No Node, Python, .NET workload, environment variable, database, or Ollama setup is required for the current restore, build, test, run, or publish workflows.
+- No Node, Python, .NET workload, environment variable, database, or manual Ollama setup is required for the current restore, build, test, run, or publish workflows.
 - Always restore after cloning or changing project/package references, then use the no-restore validation commands below:
 
   ```powershell
@@ -30,7 +30,7 @@ The test command runs one MSTest test through Microsoft.Testing.Platform. A clea
 - `Tests/` references both App and Common. `Tests/Tests.csproj` uses `MSTest.Sdk/4.0.2`; `Test1.cs` has one empty, passing `[TestMethod]`; `MSTestSettings.cs` enables method-level parallelization. Add behavior tests here with normal MSTest attributes.
 - `README.md` is the concise product intent and documents the three project folders. Root also contains `global.json` and a standard Visual Studio `.gitignore`.
 - `.vscode/launch.json` builds then launches `App/bin/Debug/net10.0/App.dll`. Keep that target in sync if the App target framework or output changes.
-- `.devcontainer/` supplies the preferred development environment: .NET 10 on Ubuntu Noble plus a `pgvector/pgvector:pg18-trixie` PostgreSQL service (`postgres`/`postgres`, database `postgres`). The app joins the database network; no ports are forwarded and no post-create command runs. Database use is not currently required by application code or tests. `docker compose -f .devcontainer/docker-compose.yml config` succeeds, but Docker warns that the Compose `version` attribute is obsolete.
+- `.devcontainer/` supplies the preferred development environment: .NET 10 on Ubuntu Noble, PostgreSQL with pgvector, and CPU-only Ollama. Ollama's `embeddinggemma` model is pulled by a one-shot Compose service and retained in the `ollama-data` named volume. The app shares the database network namespace and can reach Ollama at `http://ollama:11434`; no ports are forwarded and no post-create command runs. Database and Ollama are not required by the current application code or tests. The Compose `version` attribute is obsolete and may produce a warning.
 
 ## Change and validation expectations
 
