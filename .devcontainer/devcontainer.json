@@ -12,7 +12,15 @@
 		"vscode": {
 			"extensions": [
 				"ms-dotnettools.csharp"
-			]
+			],
+			"mcp": {
+				"servers": {
+					"microsoft.docs.mcp": {
+						"type": "http",
+						"url": "https://learn.microsoft.com/api/mcp"
+					}
+				}
+			}
 		}
 	},
 	// Features to add to the dev container. More info: https://containers.dev/features.
@@ -27,7 +35,7 @@
 	//		}
 	// }
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "sudo apt-get update && sudo apt-get install -y bubblewrap slirp4netns util-linux iptables"
+	"postCreateCommand": "dotnet tool install --local dotnet-ef && dotnet tool update --local dotnet-ef"
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"
 }
