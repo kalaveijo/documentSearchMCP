@@ -11,7 +11,8 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"ms-dotnettools.csharp"
+				"ms-dotnettools.csharp",
+				"ms-dotnettools.csdevkit"
 			],
 			"mcp": {
 				"servers": {
